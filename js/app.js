@@ -76,6 +76,7 @@ const App = {
                 case 'home':
                     app.innerHTML = this.renderHome();
                     this.bindHomeEvents();
+                    this.updateStats();
                     break;
                 case 'command':
                     app.innerHTML = this.renderCommand();
@@ -85,6 +86,7 @@ const App = {
                     break;
                 case 'hotel':
                     app.innerHTML = this.renderHotel();
+                    this.updateHotelBookingList();
                     break;
                 case 'profile':
                     app.innerHTML = this.renderProfile();
@@ -96,6 +98,25 @@ const App = {
                     app.innerHTML = this.renderHome();
             }
         }, 300);
+    },
+
+    // 计算统计数据
+    updateStats() {
+        const hotelBookings = JSON.parse(localStorage.getItem('hotelBookings') || '[]');
+        const nightTourSignups = JSON.parse(localStorage.getItem('nightTourSignups') || '[]');
+        const dayTourSignups = JSON.parse(localStorage.getItem('dayTourSignups') || '[]');
+        
+        // 订房人数（只计算选择酒店的，不包括自理）
+        const bookingCount = hotelBookings.filter(b => b.hotel === 'main').length;
+        
+        // 参加人数 = 所有酒店预订 + 所有游览报名
+        const attendeeCount = hotelBookings.length + nightTourSignups.length + dayTourSignups.length;
+        
+        // 更新显示
+        const totalAttendeesEl = document.getElementById('totalAttendees');
+        const totalBookingsEl = document.getElementById('totalBookings');
+        if (totalAttendeesEl) totalAttendeesEl.textContent = attendeeCount;
+        if (totalBookingsEl) totalBookingsEl.textContent = bookingCount;
     },
 
     // 渲染首页
@@ -150,6 +171,24 @@ const App = {
                             <div class="grid-icon"><i class="fas fa-phone-alt"></i></div>
                             <div class="grid-text">紧急联系</div>
                         </div>
+                    </div>
+                </div>
+
+                <!-- 报名统计 -->
+                <div class="card">
+                    <div class="card-title">报名统计</div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px;">
+                        <div style="text-align: center; padding: 16px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 8px; color: #fff;">
+                            <div style="font-size: 28px; font-weight: 600;" id="totalAttendees">0</div>
+                            <div style="font-size: 12px; margin-top: 4px;">参加人数</div>
+                        </div>
+                        <div style="text-align: center; padding: 16px; background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%); border-radius: 8px; color: #fff;">
+                            <div style="font-size: 28px; font-weight: 600;" id="totalBookings">0</div>
+                            <div style="font-size: 12px; margin-top: 4px;">订房人数</div>
+                        </div>
+                    </div>
+                    <div style="font-size: 13px; color: #999; text-align: center;">
+                        参加人数 = 订房 + 自理 + 本地游报名
                     </div>
                 </div>
 
@@ -362,6 +401,11 @@ const App = {
                     <div style="font-size: 14px; color: #999; margin-bottom: 16px;">请填写预订信息，提交后工作人员会联系您确认</div>
                     
                     <div style="margin-bottom: 12px;">
+                        <label style="display: block; font-size: 14px; color: #666; margin-bottom: 6px;">参会单位</label>
+                        <input type="text" id="hotelCompany" placeholder="请输入参会单位名称" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 14px; box-sizing: border-box;">
+                    </div>
+                    
+                    <div style="margin-bottom: 12px;">
                         <label style="display: block; font-size: 14px; color: #666; margin-bottom: 6px;">姓名</label>
                         <input type="text" id="hotelName" placeholder="请输入姓名" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 14px; box-sizing: border-box;">
                     </div>
@@ -418,6 +462,82 @@ const App = {
                     <div class="card-title">我的预订记录</div>
                     <div id="hotelBookingList" style="font-size: 14px; color: #999; text-align: center; padding: 20px;">
                         暂无预订记录
+                    </div>
+                </div>
+
+                <!-- 21日晚市区夜游 -->
+                <div class="card">
+                    <div class="card-title">21日晚市区夜游报名</div>
+                    <div style="font-size: 14px; color: #999; margin-bottom: 16px;">7月21日晚 洛杉矶市区夜游，含晚餐</div>
+                    
+                    <div style="margin-bottom: 12px;">
+                        <label style="display: block; font-size: 14px; color: #666; margin-bottom: 6px;">参会单位</label>
+                        <input type="text" id="nightTourCompany" placeholder="请输入参会单位名称" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 14px; box-sizing: border-box;">
+                    </div>
+                    
+                    <div style="margin-bottom: 12px;">
+                        <label style="display: block; font-size: 14px; color: #666; margin-bottom: 6px;">姓名</label>
+                        <input type="text" id="nightTourName" placeholder="请输入姓名" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 14px; box-sizing: border-box;">
+                    </div>
+                    
+                    <div style="margin-bottom: 12px;">
+                        <label style="display: block; font-size: 14px; color: #666; margin-bottom: 6px;">手机号</label>
+                        <input type="tel" id="nightTourPhone" placeholder="请输入手机号" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 14px; box-sizing: border-box;">
+                    </div>
+                    
+                    <div style="margin-bottom: 12px;">
+                        <label style="display: block; font-size: 14px; color: #666; margin-bottom: 6px;">参加人数</label>
+                        <input type="number" id="nightTourCount" placeholder="请输入参加人数" min="1" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 14px; box-sizing: border-box;">
+                    </div>
+                    
+                    <div style="margin-bottom: 16px;">
+                        <label style="display: block; font-size: 14px; color: #666; margin-bottom: 6px;">备注</label>
+                        <textarea id="nightTourRemark" placeholder="特殊需求请在此说明" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 14px; box-sizing: border-box; height: 80px; resize: vertical;"></textarea>
+                    </div>
+                    
+                    <button class="btn btn-success" style="width: 100%;" onclick="App.submitNightTour()">
+                        <i class="fas fa-paper-plane"></i> 提交报名
+                    </button>
+                    <div id="nightTourSubmitSuccess" style="color: #27ae60; font-size: 14px; margin-top: 12px; display: none; text-align: center;">
+                        <i class="fas fa-check-circle"></i> 报名成功！
+                    </div>
+                </div>
+
+                <!-- 22日白天精华游 -->
+                <div class="card">
+                    <div class="card-title">22日白天精华游报名</div>
+                    <div style="font-size: 14px; color: #999; margin-bottom: 16px;">7月22日白天 洛杉矶精华景点一日游，含午餐</div>
+                    
+                    <div style="margin-bottom: 12px;">
+                        <label style="display: block; font-size: 14px; color: #666; margin-bottom: 6px;">参会单位</label>
+                        <input type="text" id="dayTourCompany" placeholder="请输入参会单位名称" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 14px; box-sizing: border-box;">
+                    </div>
+                    
+                    <div style="margin-bottom: 12px;">
+                        <label style="display: block; font-size: 14px; color: #666; margin-bottom: 6px;">姓名</label>
+                        <input type="text" id="dayTourName" placeholder="请输入姓名" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 14px; box-sizing: border-box;">
+                    </div>
+                    
+                    <div style="margin-bottom: 12px;">
+                        <label style="display: block; font-size: 14px; color: #666; margin-bottom: 6px;">手机号</label>
+                        <input type="tel" id="dayTourPhone" placeholder="请输入手机号" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 14px; box-sizing: border-box;">
+                    </div>
+                    
+                    <div style="margin-bottom: 12px;">
+                        <label style="display: block; font-size: 14px; color: #666; margin-bottom: 6px;">参加人数</label>
+                        <input type="number" id="dayTourCount" placeholder="请输入参加人数" min="1" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 14px; box-sizing: border-box;">
+                    </div>
+                    
+                    <div style="margin-bottom: 16px;">
+                        <label style="display: block; font-size: 14px; color: #666; margin-bottom: 6px;">备注</label>
+                        <textarea id="dayTourRemark" placeholder="特殊需求请在此说明" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 14px; box-sizing: border-box; height: 80px; resize: vertical;"></textarea>
+                    </div>
+                    
+                    <button class="btn btn-success" style="width: 100%;" onclick="App.submitDayTour()">
+                        <i class="fas fa-paper-plane"></i> 提交报名
+                    </button>
+                    <div id="dayTourSubmitSuccess" style="color: #27ae60; font-size: 14px; margin-top: 12px; display: none; text-align: center;">
+                        <i class="fas fa-check-circle"></i> 报名成功！
                     </div>
                 </div>
             </div>
@@ -817,6 +937,7 @@ const App = {
 
     // 提交酒店预订（简化版 - 无验证）
     submitHotelBooking() {
+        const company = document.getElementById('hotelCompany').value.trim();
         const name = document.getElementById('hotelName').value.trim();
         const phone = document.getElementById('hotelPhone').value.trim();
         const hotel = document.getElementById('hotelSelect').value;
@@ -827,6 +948,7 @@ const App = {
         
         const booking = {
             id: Date.now().toString(),
+            company,
             name,
             phone,
             hotel,
@@ -850,6 +972,7 @@ const App = {
         this.updateHotelBookingList();
         
         // 清空表单
+        document.getElementById('hotelCompany').value = '';
         document.getElementById('hotelName').value = '';
         document.getElementById('hotelPhone').value = '';
         document.getElementById('hotelSelect').value = '';
@@ -875,8 +998,7 @@ const App = {
         
         const hotelNames = {
             'main': '主会场酒店',
-            'a': '备选酒店A',
-            'b': '备选酒店B'
+            'self': '自理'
         };
         
         const roomTypeNames = {
@@ -900,6 +1022,7 @@ const App = {
                         <span style="font-size: 12px; color: ${status.color}; background: ${status.color}15; padding: 2px 8px; border-radius: 4px;">${status.text}</span>
                     </div>
                     <div style="font-size: 13px; color: #666; line-height: 1.6;">
+                        <div>单位：${b.company || '-'}</div>
                         <div>姓名：${b.name}</div>
                         <div>房型：${roomTypeNames[b.roomType] || b.roomType}</div>
                         <div>入住：${b.checkIn} 至 ${b.checkOut}</div>
@@ -908,6 +1031,76 @@ const App = {
                 </div>
             `;
         }).join('');
+    },
+
+    // 提交夜游报名
+    submitNightTour() {
+        const company = document.getElementById('nightTourCompany').value.trim();
+        const name = document.getElementById('nightTourName').value.trim();
+        const phone = document.getElementById('nightTourPhone').value.trim();
+        const count = document.getElementById('nightTourCount').value;
+        const remark = document.getElementById('nightTourRemark').value.trim();
+        
+        const signup = {
+            id: Date.now().toString(),
+            company,
+            name,
+            phone,
+            count: parseInt(count) || 1,
+            remark,
+            submitTime: new Date().toLocaleString('zh-CN')
+        };
+        
+        let signups = JSON.parse(localStorage.getItem('nightTourSignups') || '[]');
+        signups.push(signup);
+        localStorage.setItem('nightTourSignups', JSON.stringify(signups));
+        
+        document.getElementById('nightTourSubmitSuccess').style.display = 'block';
+        
+        document.getElementById('nightTourCompany').value = '';
+        document.getElementById('nightTourName').value = '';
+        document.getElementById('nightTourPhone').value = '';
+        document.getElementById('nightTourCount').value = '';
+        document.getElementById('nightTourRemark').value = '';
+        
+        setTimeout(() => {
+            document.getElementById('nightTourSubmitSuccess').style.display = 'none';
+        }, 3000);
+    },
+
+    // 提交日游报名
+    submitDayTour() {
+        const company = document.getElementById('dayTourCompany').value.trim();
+        const name = document.getElementById('dayTourName').value.trim();
+        const phone = document.getElementById('dayTourPhone').value.trim();
+        const count = document.getElementById('dayTourCount').value;
+        const remark = document.getElementById('dayTourRemark').value.trim();
+        
+        const signup = {
+            id: Date.now().toString(),
+            company,
+            name,
+            phone,
+            count: parseInt(count) || 1,
+            remark,
+            submitTime: new Date().toLocaleString('zh-CN')
+        };
+        
+        let signups = JSON.parse(localStorage.getItem('dayTourSignups') || '[]');
+        signups.push(signup);
+        localStorage.setItem('dayTourSignups', JSON.stringify(signups));
+        
+        document.getElementById('dayTourSubmitSuccess').style.display = 'block';
+        
+        document.getElementById('dayTourCompany').value = '';
+        document.getElementById('dayTourName').value = '';
+        document.getElementById('dayTourPhone').value = '';
+        document.getElementById('dayTourCount').value = '';
+        document.getElementById('dayTourRemark').value = '';
+        
+        setTimeout(() => {
+            document.getElementById('dayTourSubmitSuccess').style.display = 'none';
+        }, 3000);
     },
 
     // 加载本地数据
