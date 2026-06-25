@@ -6,7 +6,7 @@ const App = {
         userRole: 'attendee',
         currentConference: {
             id: 'conf-2026-001',
-            name: '2026全球科技大会',
+            name: '北美第三届恳请大会',
             location: '上海国际会议中心',
             address: '上海市浦东新区滨江大道2727号',
             startDate: '2026-07-15',
@@ -21,8 +21,13 @@ const App = {
         }
     },
 
+    // 管理员密码（默认密码，建议部署后修改）
+    adminPassword: 'admin123',
+    isAdminLoggedIn: false,
+
     // 初始化
     init() {
+        this.loadLocalData();
         this.bindEvents();
         this.loadPage('home');
     },
@@ -75,6 +80,9 @@ const App = {
                     break;
                 case 'profile':
                     app.innerHTML = this.renderProfile();
+                    break;
+                case 'admin':
+                    app.innerHTML = this.renderAdmin();
                     break;
                 default:
                     app.innerHTML = this.renderHome();
@@ -424,7 +432,8 @@ const App = {
         const routes = {
             'agenda': this.renderAgenda.bind(this),
             'attendee': this.renderAttendee.bind(this),
-            'notice': this.renderNotice.bind(this)
+            'notice': this.renderNotice.bind(this),
+            'admin': this.renderAdmin.bind(this)
         };
         
         if (routes[page]) {
@@ -577,6 +586,170 @@ const App = {
         `;
     },
 
+    // 渲染管理页面
+    renderAdmin() {
+        if (!this.isAdminLoggedIn) {
+            return this.renderAdminLogin();
+        }
+        return this.renderAdminPanel();
+    },
+
+    // 渲染登录页面
+    renderAdminLogin() {
+        return `
+            <div class="page">
+                <div class="card" style="text-align: center; padding: 40px 20px;">
+                    <div style="width: 60px; height: 60px; border-radius: 50%; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; color: #fff; font-size: 24px;">
+                        <i class="fas fa-lock"></i>
+                    </div>
+                    <div style="font-size: 20px; font-weight: 600; margin-bottom: 8px;">管理员登录</div>
+                    <div style="font-size: 14px; color: #999; margin-bottom: 24px;">请输入管理密码进入后台</div>
+                    <input type="password" id="adminPassword" placeholder="请输入密码" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 16px; margin-bottom: 16px; box-sizing: border-box;">
+                    <button class="btn btn-primary" style="width: 100%;" onclick="App.adminLogin()">
+                        <i class="fas fa-sign-in-alt"></i> 登录
+                    </button>
+                    <div id="loginError" style="color: #e74c3c; font-size: 14px; margin-top: 12px; display: none;">密码错误，请重试</div>
+                </div>
+                <button class="btn btn-primary" style="margin: 12px; width: calc(100% - 24px);" onclick="App.loadPage('home')">返回首页</button>
+            </div>
+        `;
+    },
+
+    // 管理员登录
+    adminLogin() {
+        const password = document.getElementById('adminPassword').value;
+        if (password === this.adminPassword) {
+            this.isAdminLoggedIn = true;
+            this.loadPage('admin');
+        } else {
+            document.getElementById('loginError').style.display = 'block';
+        }
+    },
+
+    // 渲染管理面板
+    renderAdminPanel() {
+        const conf = this.data.currentConference;
+        return `
+            <div class="page">
+                <div class="card">
+                    <div class="card-title">
+                        <i class="fas fa-cog"></i> 后台管理
+                        <span style="float: right; font-size: 12px; color: #667eea; cursor: pointer;" onclick="App.adminLogout()">退出登录</span>
+                    </div>
+                    <div style="font-size: 14px; color: #999; margin-bottom: 16px;">修改大会信息后点击保存即可更新</div>
+                    
+                    <div style="margin-bottom: 16px;">
+                        <label style="display: block; font-size: 14px; color: #666; margin-bottom: 6px;">大会名称</label>
+                        <input type="text" id="editConfName" value="${conf.name}" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 14px; box-sizing: border-box;">
+                    </div>
+                    
+                    <div style="margin-bottom: 16px;">
+                        <label style="display: block; font-size: 14px; color: #666; margin-bottom: 6px;">举办地点</label>
+                        <input type="text" id="editConfLocation" value="${conf.location}" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 14px; box-sizing: border-box;">
+                    </div>
+                    
+                    <div style="margin-bottom: 16px;">
+                        <label style="display: block; font-size: 14px; color: #666; margin-bottom: 6px;">详细地址</label>
+                        <input type="text" id="editConfAddress" value="${conf.address}" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 14px; box-sizing: border-box;">
+                    </div>
+                    
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px;">
+                        <div>
+                            <label style="display: block; font-size: 14px; color: #666; margin-bottom: 6px;">开始日期</label>
+                            <input type="date" id="editConfStartDate" value="${conf.startDate}" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 14px; box-sizing: border-box;">
+                        </div>
+                        <div>
+                            <label style="display: block; font-size: 14px; color: #666; margin-bottom: 6px;">结束日期</label>
+                            <input type="date" id="editConfEndDate" value="${conf.endDate}" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 14px; box-sizing: border-box;">
+                        </div>
+                    </div>
+                    
+                    <div style="margin-bottom: 16px;">
+                        <label style="display: block; font-size: 14px; color: #666; margin-bottom: 6px;">大会状态</label>
+                        <select id="editConfStatus" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 14px; box-sizing: border-box;">
+                            <option value="upcoming" ${conf.status === 'upcoming' ? 'selected' : ''}>即将开始</option>
+                            <option value="ongoing" ${conf.status === 'ongoing' ? 'selected' : ''}>进行中</option>
+                            <option value="completed" ${conf.status === 'completed' ? 'selected' : ''}>已结束</option>
+                        </select>
+                    </div>
+                    
+                    <button class="btn btn-success" style="width: 100%;" onclick="App.saveConferenceData()">
+                        <i class="fas fa-save"></i> 保存修改
+                    </button>
+                    <div id="saveSuccess" style="color: #27ae60; font-size: 14px; margin-top: 12px; display: none; text-align: center;">
+                        <i class="fas fa-check-circle"></i> 保存成功！
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-title">数据统计</div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                        <div style="text-align: center; padding: 16px; background: #f8f9fa; border-radius: 8px;">
+                            <div style="font-size: 24px; font-weight: 600; color: #667eea;">${this.data.stats.attendeeCount}</div>
+                            <div style="font-size: 12px; color: #999; margin-top: 4px;">参会人数</div>
+                        </div>
+                        <div style="text-align: center; padding: 16px; background: #f8f9fa; border-radius: 8px;">
+                            <div style="font-size: 24px; font-weight: 600; color: #27ae60;">${this.data.stats.checkInCount}</div>
+                            <div style="font-size: 12px; color: #999; margin-top: 4px;">已签到</div>
+                        </div>
+                    </div>
+                </div>
+
+                <button class="btn btn-primary" style="margin: 12px; width: calc(100% - 24px);" onclick="App.loadPage('home')">返回首页</button>
+            </div>
+        `;
+    },
+
+    // 保存大会数据
+    saveConferenceData() {
+        const name = document.getElementById('editConfName').value;
+        const location = document.getElementById('editConfLocation').value;
+        const address = document.getElementById('editConfAddress').value;
+        const startDate = document.getElementById('editConfStartDate').value;
+        const endDate = document.getElementById('editConfEndDate').value;
+        const status = document.getElementById('editConfStatus').value;
+        
+        if (name && location && startDate && endDate) {
+            this.data.currentConference = {
+                ...this.data.currentConference,
+                name,
+                location,
+                address,
+                startDate,
+                endDate,
+                status
+            };
+            
+            // 保存到本地存储
+            localStorage.setItem('conferenceData', JSON.stringify(this.data.currentConference));
+            
+            document.getElementById('saveSuccess').style.display = 'block';
+            setTimeout(() => {
+                document.getElementById('saveSuccess').style.display = 'none';
+            }, 3000);
+        } else {
+            alert('请填写完整信息');
+        }
+    },
+
+    // 管理员退出
+    adminLogout() {
+        this.isAdminLoggedIn = false;
+        this.loadPage('home');
+    },
+
+    // 加载本地数据
+    loadLocalData() {
+        const saved = localStorage.getItem('conferenceData');
+        if (saved) {
+            try {
+                this.data.currentConference = JSON.parse(saved);
+            } catch (e) {
+                console.log('本地数据加载失败');
+            }
+        }
+    },
+
     // 拨打电话
     makePhoneCall() {
         window.location.href = 'tel:400-888-8888';
@@ -587,3 +760,4 @@ const App = {
 document.addEventListener('DOMContentLoaded', () => {
     App.init();
 });
+
