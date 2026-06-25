@@ -342,24 +342,16 @@ const App = {
                     <div class="list-item">
                         <div class="list-icon"><i class="fas fa-hotel"></i></div>
                         <div class="list-content">
-                            <div class="list-title">主会场酒店</div>
-                            <div class="list-desc">上海国际会议中心酒店</div>
+                            <div class="list-title">主会场</div>
+                            <div class="list-desc">圣盖博希尔顿</div>
                         </div>
                         <span class="tag tag-success">推荐</span>
                     </div>
                     <div class="list-item">
                         <div class="list-icon"><i class="fas fa-bed"></i></div>
                         <div class="list-content">
-                            <div class="list-title">备选酒店A</div>
-                            <div class="list-desc">距离会场500米，步行5分钟</div>
-                        </div>
-                        <span class="tag tag-primary">备选</span>
-                    </div>
-                    <div class="list-item">
-                        <div class="list-icon"><i class="fas fa-bed"></i></div>
-                        <div class="list-content">
-                            <div class="list-title">备选酒店B</div>
-                            <div class="list-desc">距离会场1公里，班车接送</div>
+                            <div class="list-title">其他选择</div>
+                            <div class="list-desc">自理</div>
                         </div>
                         <span class="tag tag-primary">备选</span>
                     </div>
@@ -382,10 +374,9 @@ const App = {
                     <div style="margin-bottom: 12px;">
                         <label style="display: block; font-size: 14px; color: #666; margin-bottom: 6px;">选择酒店</label>
                         <select id="hotelSelect" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 14px; box-sizing: border-box;">
-                            <option value="">请选择酒店</option>
-                            <option value="main">上海国际会议中心酒店（主会场）</option>
-                            <option value="a">备选酒店A（距离会场500米）</option>
-                            <option value="b">备选酒店B（距离会场1公里，班车接送）</option>
+                            <option value="">请选择</option>
+                            <option value="main">主会场 - 圣盖博希尔顿</option>
+                            <option value="self">自理</option>
                         </select>
                     </div>
                     
