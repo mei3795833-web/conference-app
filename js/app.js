@@ -88,6 +88,12 @@ const App = {
                     app.innerHTML = this.renderHotel();
                     this.updateHotelBookingList();
                     break;
+                case 'nightTour':
+                    app.innerHTML = this.renderNightTour();
+                    break;
+                case 'dayTour':
+                    app.innerHTML = this.renderDayTour();
+                    break;
                 case 'profile':
                     app.innerHTML = this.renderProfile();
                     break;
@@ -464,11 +470,45 @@ const App = {
                         暂无预订记录
                     </div>
                 </div>
+            </div>
+        `;
+    },
 
-                <!-- 21日晚市区夜游 -->
+    // 渲染夜游页面
+    renderNightTour() {
+        return `
+            <div class="page">
                 <div class="card">
-                    <div class="card-title">21日晚市区夜游报名</div>
-                    <div style="font-size: 14px; color: #999; margin-bottom: 16px;">7月21日晚 洛杉矶市区夜游，含晚餐</div>
+                    <div class="card-title">洛杉矶市区夜游</div>
+                    <div style="font-size: 14px; color: #999; margin-bottom: 16px;">
+                        <i class="fas fa-calendar"></i> 7月21日（周一）晚 18:00-22:00
+                    </div>
+                    
+                    <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 8px; padding: 16px; color: #fff; margin-bottom: 16px;">
+                        <div style="font-size: 16px; font-weight: 600; margin-bottom: 8px;"><i class="fas fa-route"></i> 游览路线</div>
+                        <div style="font-size: 13px; line-height: 1.8;">
+                            <div>1. 圣盖博希尔顿酒店集合出发</div>
+                            <div>2. 洛杉矶市中心（Downtown LA）- 观赏城市夜景</div>
+                            <div>3. 格里菲斯天文台 - 俯瞰洛杉矶全景</div>
+                            <div>4. 好莱坞星光大道 - 感受星光璀璨</div>
+                            <div>5. 返回酒店</div>
+                        </div>
+                    </div>
+                    
+                    <div style="margin-bottom: 16px;">
+                        <div style="font-size: 14px; font-weight: 600; color: #333; margin-bottom: 8px;"><i class="fas fa-info-circle"></i> 行程说明</div>
+                        <div style="font-size: 13px; color: #666; line-height: 1.6;">
+                            <div>• 含晚餐（中式围餐）</div>
+                            <div>• 专业中文导游全程陪同</div>
+                            <div>• 空调大巴接送</div>
+                            <div>• 费用：$80/人</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-title">夜游报名</div>
+                    <div style="font-size: 14px; color: #999; margin-bottom: 16px;">请填写报名信息</div>
                     
                     <div style="margin-bottom: 12px;">
                         <label style="display: block; font-size: 14px; color: #666; margin-bottom: 6px;">参会单位</label>
@@ -502,11 +542,47 @@ const App = {
                         <i class="fas fa-check-circle"></i> 报名成功！
                     </div>
                 </div>
+            </div>
+        `;
+    },
 
-                <!-- 22日白天精华游 -->
+    // 渲染日游页面
+    renderDayTour() {
+        return `
+            <div class="page">
                 <div class="card">
-                    <div class="card-title">22日白天精华游报名</div>
-                    <div style="font-size: 14px; color: #999; margin-bottom: 16px;">7月22日白天 洛杉矶精华景点一日游，含午餐</div>
+                    <div class="card-title">洛杉矶精华一日游</div>
+                    <div style="font-size: 14px; color: #999; margin-bottom: 16px;">
+                        <i class="fas fa-calendar"></i> 7月22日（周二）白天 09:00-18:00
+                    </div>
+                    
+                    <div style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); border-radius: 8px; padding: 16px; color: #fff; margin-bottom: 16px;">
+                        <div style="font-size: 16px; font-weight: 600; margin-bottom: 8px;"><i class="fas fa-route"></i> 游览路线</div>
+                        <div style="font-size: 13px; line-height: 1.8;">
+                            <div>1. 圣盖博希尔顿酒店集合出发</div>
+                            <div>2. 圣塔莫尼卡海滩 - 感受加州阳光</div>
+                            <div>3. 比弗利山庄 - 探访明星豪宅区</div>
+                            <div>4. 罗迪欧大道 - 顶级购物街</div>
+                            <div>5. 盖蒂中心 - 世界级艺术博物馆</div>
+                            <div>6. 返回酒店</div>
+                        </div>
+                    </div>
+                    
+                    <div style="margin-bottom: 16px;">
+                        <div style="font-size: 14px; font-weight: 600; color: #333; margin-bottom: 8px;"><i class="fas fa-info-circle"></i> 行程说明</div>
+                        <div style="font-size: 13px; color: #666; line-height: 1.6;">
+                            <div>• 含午餐（西式简餐）</div>
+                            <div>• 专业中文导游全程陪同</div>
+                            <div>• 空调大巴接送</div>
+                            <div>• 盖蒂中心门票已含</div>
+                            <div>• 费用：$120/人</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-title">日游报名</div>
+                    <div style="font-size: 14px; color: #999; margin-bottom: 16px;">请填写报名信息</div>
                     
                     <div style="margin-bottom: 12px;">
                         <label style="display: block; font-size: 14px; color: #666; margin-bottom: 6px;">参会单位</label>
