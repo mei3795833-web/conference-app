@@ -1,0 +1,96 @@
+<!-- 指挥页面 - 大会指挥调度 -->
+<view class="container">
+  <!-- 指挥状态看板 -->
+  <view class="command-dashboard">
+    <view class="dashboard-item {{currentPhase}}">
+      <text class="phase-title">当前阶段</text>
+      <text class="phase-name">{{currentPhaseName}}</text>
+      <text class="phase-time">{{phaseTime}}</text>
+    </view>
+  </view>
+
+  <!-- 快捷操作 -->
+  <view class="card">
+    <view class="card-title">快捷操作</view>
+    <view class="action-grid">
+      <view class="action-item" bindtap="sendNotice">
+        <image class="action-icon" src="/images/notice.png"></image>
+        <text class="action-text">发送通知</text>
+      </view>
+      <view class="action-item" bindtap="emergencyHandle">
+        <image class="action-icon" src="/images/emergency.png"></image>
+        <text class="action-text">紧急处理</text>
+      </view>
+      <view class="action-item" bindtap="personnelDispatch">
+        <image class="action-icon" src="/images/dispatch.png"></image>
+        <text class="action-text">人员调度</text>
+      </view>
+      <view class="action-item" bindtap="viewReport">
+        <image class="action-icon" src="/images/report.png"></image>
+        <text class="action-text">查看报表</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 任务列表 -->
+  <view class="card">
+    <view class="card-title">
+      <text>任务列表</text>
+      <view class="filter-tabs">
+        <text class="tab {{filterType=='all'?'active':''}}" bindtap="filterTasks" data-type="all">全部</text>
+        <text class="tab {{filterType=='pending'?'active':''}}" bindtap="filterTasks" data-type="pending">待处理</text>
+        <text class="tab {{filterType=='urgent'?'active':''}}" bindtap="filterTasks" data-type="urgent">紧急</text>
+      </view>
+    </view>
+    <view class="task-list">
+      <view class="task-item {{item.priority}}" wx:for="{{filteredTasks}}" wx:key="id" bindtap="handleTask" data-id="{{item.id}}">
+        <view class="task-header">
+          <text class="task-title">{{item.title}}</text>
+          <view class="priority-tag {{item.priority}}">{{item.priorityText}}</view>
+        </view>
+        <text class="task-desc">{{item.description}}</text>
+        <view class="task-footer">
+          <text class="task-time">{{item.createTime}}</text>
+          <text class="task-status">{{item.statusText}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 人员分布 -->
+  <view class="card">
+    <view class="card-title">人员分布</view>
+    <view class="personnel-stats">
+      <view class="personnel-item" wx:for="{{personnelStats}}" wx:key="area">
+        <text class="area-name">{{item.area}}</text>
+        <view class="progress-bar">
+          <view class="progress-fill" style="width: {{item.percentage}}%"></view>
+        </view>
+        <text class="area-count">{{item.count}}人</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 实时消息 -->
+  <view class="card">
+    <view class="card-title">实时消息</view>
+    <view class="message-list">
+      <view class="message-item" wx:for="{{messages}}" wx:key="id">
+        <image class="avatar" src="{{item.avatar}}"></image>
+        <view class="message-content">
+          <text class="message-name">{{item.name}}</text>
+          <text class="message-text">{{item.content}}</text>
+          <text class="message-time">{{item.time}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>
+
+<!-- 底部操作栏 -->
+<view class="bottom-bar">
+  <button class="btn-emergency" bindtap="emergencyHandle">
+    <image src="/images/emergency-white.png"></image>
+    <text>紧急处理</text>
+  </button>
+</view>

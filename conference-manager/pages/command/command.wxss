@@ -1,0 +1,260 @@
+/* 指挥页面样式 */
+.command-dashboard {
+  background: linear-gradient(135deg, #1AAD19, #2ECC71);
+  padding: 40rpx 30rpx;
+  margin: -20rpx -20rpx 20rpx;
+  border-radius: 0 0 30rpx 30rpx;
+}
+
+.dashboard-item {
+  text-align: center;
+  color: #fff;
+}
+
+.phase-title {
+  font-size: 26rpx;
+  opacity: 0.9;
+  display: block;
+}
+
+.phase-name {
+  font-size: 48rpx;
+  font-weight: bold;
+  margin: 16rpx 0;
+  display: block;
+}
+
+.phase-time {
+  font-size: 24rpx;
+  opacity: 0.8;
+  display: block;
+}
+
+.action-grid {
+  display: flex;
+  justify-content: space-around;
+  padding: 20rpx 0;
+}
+
+.action-item {
+  text-align: center;
+  padding: 20rpx;
+}
+
+.action-icon {
+  width: 80rpx;
+  height: 80rpx;
+  margin-bottom: 12rpx;
+}
+
+.action-text {
+  font-size: 26rpx;
+  color: #333;
+  display: block;
+}
+
+.filter-tabs {
+  display: flex;
+  gap: 20rpx;
+}
+
+.tab {
+  font-size: 26rpx;
+  color: #999;
+  padding: 8rpx 20rpx;
+  border-radius: 30rpx;
+  background: #f5f5f5;
+}
+
+.tab.active {
+  color: #1AAD19;
+  background: #e8f5e9;
+}
+
+.task-list {
+  margin-top: 20rpx;
+}
+
+.task-item {
+  background: #f9f9f9;
+  border-radius: 12rpx;
+  padding: 24rpx;
+  margin-bottom: 16rpx;
+  border-left: 6rpx solid #1AAD19;
+}
+
+.task-item.urgent {
+  border-left-color: #ff4d4f;
+  background: #fff5f5;
+}
+
+.task-item.high {
+  border-left-color: #ff9800;
+  background: #fff8e1;
+}
+
+.task-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12rpx;
+}
+
+.task-title {
+  font-size: 30rpx;
+  font-weight: 500;
+  color: #333;
+}
+
+.priority-tag {
+  font-size: 22rpx;
+  padding: 4rpx 16rpx;
+  border-radius: 20rpx;
+}
+
+.priority-tag.urgent {
+  background: #ff4d4f;
+  color: #fff;
+}
+
+.priority-tag.high {
+  background: #ff9800;
+  color: #fff;
+}
+
+.priority-tag.normal {
+  background: #1AAD19;
+  color: #fff;
+}
+
+.task-desc {
+  font-size: 26rpx;
+  color: #666;
+  display: block;
+  margin-bottom: 12rpx;
+}
+
+.task-footer {
+  display: flex;
+  justify-content: space-between;
+  font-size: 24rpx;
+  color: #999;
+}
+
+.personnel-stats {
+  padding: 10rpx 0;
+}
+
+.personnel-item {
+  display: flex;
+  align-items: center;
+  padding: 16rpx 0;
+  border-bottom: 1rpx solid #f0f0f0;
+}
+
+.personnel-item:last-child {
+  border-bottom: none;
+}
+
+.area-name {
+  width: 120rpx;
+  font-size: 28rpx;
+  color: #333;
+}
+
+.progress-bar {
+  flex: 1;
+  height: 16rpx;
+  background: #f0f0f0;
+  border-radius: 8rpx;
+  margin: 0 20rpx;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #1AAD19, #2ECC71);
+  border-radius: 8rpx;
+  transition: width 0.3s;
+}
+
+.area-count {
+  width: 80rpx;
+  text-align: right;
+  font-size: 26rpx;
+  color: #666;
+}
+
+.message-list {
+  max-height: 400rpx;
+  overflow-y: auto;
+}
+
+.message-item {
+  display: flex;
+  padding: 16rpx 0;
+  border-bottom: 1rpx solid #f0f0f0;
+}
+
+.avatar {
+  width: 64rpx;
+  height: 64rpx;
+  border-radius: 50%;
+  margin-right: 16rpx;
+}
+
+.message-content {
+  flex: 1;
+}
+
+.message-name {
+  font-size: 28rpx;
+  color: #333;
+  font-weight: 500;
+}
+
+.message-text {
+  font-size: 26rpx;
+  color: #666;
+  margin-top: 4rpx;
+  display: block;
+}
+
+.message-time {
+  font-size: 22rpx;
+  color: #999;
+  margin-top: 4rpx;
+  display: block;
+}
+
+.bottom-bar {
+  position: fixed;
+  bottom: 120rpx;
+  left: 0;
+  right: 0;
+  padding: 20rpx 40rpx;
+  background: #fff;
+  box-shadow: 0 -2rpx 10rpx rgba(0,0,0,0.05);
+}
+
+.btn-emergency {
+  background: #ff4d4f;
+  color: #fff;
+  border-radius: 50rpx;
+  padding: 24rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 30rpx;
+  border: none;
+}
+
+.btn-emergency::after {
+  border: none;
+}
+
+.btn-emergency image {
+  width: 40rpx;
+  height: 40rpx;
+  margin-right: 12rpx;
+}

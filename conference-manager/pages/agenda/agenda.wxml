@@ -1,0 +1,35 @@
+<!-- 议程页面 -->
+<view class="container">
+  <view class="date-tabs">
+    <view class="date-tab {{selectedDate=='day1'?'active':''}}" bindtap="switchDate" data-date="day1">
+      <text class="date-day">第一天</text>
+      <text class="date-text">7月15日</text>
+    </view>
+    <view class="date-tab {{selectedDate=='day2'?'active':''}}" bindtap="switchDate" data-date="day2">
+      <text class="date-day">第二天</text>
+      <text class="date-text">7月16日</text>
+    </view>
+  </view>
+
+  <view class="agenda-list">
+    <view class="agenda-item {{item.status}}" wx:for="{{agendaList}}" wx:key="id">
+      <view class="agenda-time">
+        <text class="time-start">{{item.startTime}}</text>
+        <text class="time-end">{{item.endTime}}</text>
+      </view>
+      <view class="agenda-content">
+        <text class="agenda-title">{{item.title}}</text>
+        <text class="agenda-speaker" wx:if="{{item.speaker}}">演讲者: {{item.speaker}}</text>
+        <text class="agenda-location">{{item.location}}</text>
+        <view class="agenda-tags">
+          <text class="tag" wx:for="{{item.tags}}" wx:key="*this">{{item}}</text>
+        </view>
+      </view>
+      <view class="agenda-action">
+        <button class="btn-mini {{item.isFavorite?'active':''}}" bindtap="toggleFavorite" data-id="{{item.id}}">
+          {{item.isFavorite?'已收藏':'收藏'}}
+        </button>
+      </view>
+    </view>
+  </view>
+</view>

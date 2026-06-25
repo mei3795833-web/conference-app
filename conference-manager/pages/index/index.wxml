@@ -1,0 +1,89 @@
+<!-- 首页 - 大会总览 -->
+<view class="container">
+  <!-- 大会信息卡片 -->
+  <view class="card conference-card">
+    <view class="conference-header">
+      <image class="conference-banner" src="/images/banner.jpg" mode="aspectFill"></image>
+      <view class="conference-overlay">
+        <text class="conference-name">{{conferenceInfo.name}}</text>
+        <text class="conference-date">{{conferenceInfo.date}}</text>
+        <view class="status-tag {{conferenceInfo.status}}">{{statusText}}</view>
+      </view>
+    </view>
+    
+    <view class="conference-details">
+      <view class="detail-item">
+        <image class="detail-icon" src="/images/location.png"></image>
+        <text class="detail-text">{{conferenceInfo.location}}</text>
+      </view>
+      <view class="detail-item">
+        <image class="detail-icon" src="/images/address.png"></image>
+        <text class="detail-text">{{conferenceInfo.address}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 快捷入口 -->
+  <view class="card">
+    <view class="card-title">快捷入口</view>
+    <view class="grid">
+      <view class="grid-item" bindtap="navigateTo" data-page="agenda">
+        <image class="grid-icon" src="/images/agenda.png"></image>
+        <text class="grid-text">会议议程</text>
+      </view>
+      <view class="grid-item" bindtap="navigateTo" data-page="attendee">
+        <image class="grid-icon" src="/images/attendee.png"></image>
+        <text class="grid-text">参会人员</text>
+      </view>
+      <view class="grid-item" bindtap="navigateTo" data-page="notice">
+        <image class="grid-icon" src="/images/notice.png"></image>
+        <text class="grid-text">通知公告</text>
+      </view>
+      <view class="grid-item" bindtap="makePhoneCall">
+        <image class="grid-icon" src="/images/phone.png"></image>
+        <text class="grid-text">紧急联系</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 今日议程 -->
+  <view class="card">
+    <view class="card-title">
+      <text>今日议程</text>
+      <text class="more" bindtap="navigateTo" data-page="agenda">查看全部 ></text>
+    </view>
+    <view class="timeline">
+      <view class="timeline-item" wx:for="{{todayAgenda}}" wx:key="id">
+        <view class="timeline-dot {{item.status}}"></view>
+        <view class="timeline-content">
+          <text class="time">{{item.time}}</text>
+          <text class="title">{{item.title}}</text>
+          <text class="location">{{item.location}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 实时数据 -->
+  <view class="card">
+    <view class="card-title">实时数据</view>
+    <view class="stats-grid">
+      <view class="stat-item">
+        <text class="stat-number">{{stats.attendeeCount}}</text>
+        <text class="stat-label">参会人数</text>
+      </view>
+      <view class="stat-item">
+        <text class="stat-number">{{stats.checkInCount}}</text>
+        <text class="stat-label">已签到</text>
+      </view>
+      <view class="stat-item">
+        <text class="stat-number">{{stats.hotelCount}}</text>
+        <text class="stat-label">已入住</text>
+      </view>
+      <view class="stat-item">
+        <text class="stat-number">{{stats.onlineCount}}</text>
+        <text class="stat-label">在线人数</text>
+      </view>
+    </view>
+  </view>
+</view>

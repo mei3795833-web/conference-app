@@ -1,0 +1,11 @@
+<!-- 隐私协议页面 -->
+<view class="container">
+  <view class="privacy-content">
+    <text class="privacy-title">隐私保护指引</text>
+    <text class="privacy-text">1. 本小程序需要获取您的位置信息，用于提供交通导航和附近服务推荐功能。</text>
+    <text class="privacy-text">2. 您的个人信息将严格保密，仅用于大会服务相关功能。</text>
+    <text class="privacy-text">3. 我们不会将您的信息分享给第三方。</text>
+    <text class="privacy-text">4. 您有权随时撤回授权。</text>
+  </view>
+  <button class="btn-primary" bindtap="agreePrivacy">同意并继续</button>
+</view>

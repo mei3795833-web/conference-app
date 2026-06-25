@@ -1,0 +1,86 @@
+<!-- 我的页面 - 个人中心 -->
+<view class="container">
+  <!-- 用户信息 -->
+  <view class="user-card">
+    <view class="user-info">
+      <image class="avatar" src="{{userInfo.avatarUrl || '/images/default-avatar.png'}}"></image>
+      <view class="user-detail">
+        <text class="user-name">{{userInfo.nickName || '未登录'}}</text>
+        <text class="user-role">{{roleText}}</text>
+      </view>
+    </view>
+    <view class="user-stats">
+      <view class="user-stat">
+        <text class="stat-num">{{userStats.meetings}}</text>
+        <text class="stat-label">参会</text>
+      </view>
+      <view class="user-stat">
+        <text class="stat-num">{{userStats.tasks}}</text>
+        <text class="stat-label">任务</text>
+      </view>
+      <view class="user-stat">
+        <text class="stat-num">{{userStats.messages}}</text>
+        <text class="stat-label">消息</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 功能菜单 -->
+  <view class="card menu-card">
+    <view class="menu-item" bindtap="viewAgenda">
+      <image class="menu-icon" src="/images/agenda.png"></image>
+      <text class="menu-text">我的议程</text>
+      <image class="menu-arrow" src="/images/arrow-right.png"></image>
+    </view>
+    <view class="menu-item" bindtap="viewHotel">
+      <image class="menu-icon" src="/images/hotel.png"></image>
+      <text class="menu-text">我的住宿</text>
+      <image class="menu-arrow" src="/images/arrow-right.png"></image>
+    </view>
+    <view class="menu-item" bindtap="viewTraffic">
+      <image class="menu-icon" src="/images/traffic.png"></image>
+      <text class="menu-text">交通安排</text>
+      <image class="menu-arrow" src="/images/arrow-right.png"></image>
+    </view>
+    <view class="menu-item" bindtap="viewNotice">
+      <image class="menu-icon" src="/images/notice.png"></image>
+      <text class="menu-text">通知消息</text>
+      <view class="badge" wx:if="{{unreadCount > 0}}">{{unreadCount}}</view>
+      <image class="menu-arrow" src="/images/arrow-right.png"></image>
+    </view>
+  </view>
+
+  <!-- 设置菜单 -->
+  <view class="card menu-card">
+    <view class="menu-item" bindtap="switchRole">
+      <image class="menu-icon" src="/images/role.png"></image>
+      <text class="menu-text">切换角色</text>
+      <text class="menu-value">{{roleText}}</text>
+      <image class="menu-arrow" src="/images/arrow-right.png"></image>
+    </view>
+    <view class="menu-item" bindtap="setReminder">
+      <image class="menu-icon" src="/images/reminder.png"></image>
+      <text class="menu-text">提醒设置</text>
+      <image class="menu-arrow" src="/images/arrow-right.png"></image>
+    </view>
+    <view class="menu-item" bindtap="viewPrivacy">
+      <image class="menu-icon" src="/images/privacy.png"></image>
+      <text class="menu-text">隐私协议</text>
+      <image class="menu-arrow" src="/images/arrow-right.png"></image>
+    </view>
+    <view class="menu-item" bindtap="contactSupport">
+      <image class="menu-icon" src="/images/support.png"></image>
+      <text class="menu-text">联系客服</text>
+      <image class="menu-arrow" src="/images/arrow-right.png"></image>
+    </view>
+    <view class="menu-item" bindtap="about">
+      <image class="menu-icon" src="/images/about.png"></image>
+      <text class="menu-text">关于我们</text>
+      <text class="menu-value">v1.0.0</text>
+      <image class="menu-arrow" src="/images/arrow-right.png"></image>
+    </view>
+  </view>
+
+  <!-- 退出登录 -->
+  <button class="btn-logout" bindtap="logout">退出登录</button>
+</view>

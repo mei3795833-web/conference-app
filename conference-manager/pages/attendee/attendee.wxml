@@ -1,0 +1,42 @@
+<!-- 参会人员页面 -->
+<view class="container">
+  <!-- 搜索栏 -->
+  <view class="search-bar">
+    <input type="text" placeholder="搜索姓名/公司/职位" bindinput="onSearch" value="{{searchKey}}"/>
+    <image src="/images/search.png"></image>
+  </view>
+
+  <!-- 统计卡片 -->
+  <view class="stats-row">
+    <view class="stat-card">
+      <text class="stat-num">{{stats.total}}</text>
+      <text class="stat-label">总人数</text>
+    </view>
+    <view class="stat-card">
+      <text class="stat-num">{{stats.checkedIn}}</text>
+      <text class="stat-label">已签到</text>
+    </view>
+    <view class="stat-card">
+      <text class="stat-num">{{stats.online}}</text>
+      <text class="stat-label">在线</text>
+    </view>
+  </view>
+
+  <!-- 人员列表 -->
+  <view class="attendee-list">
+    <view class="attendee-item" wx:for="{{attendeeList}}" wx:key="id" bindtap="viewAttendeeDetail" data-id="{{item.id}}">
+      <image class="attendee-avatar" src="{{item.avatar}}"></image>
+      <view class="attendee-info">
+        <view class="attendee-header">
+          <text class="attendee-name">{{item.name}}</text>
+          <view class="attendee-status {{item.status}}">{{item.statusText}}</view>
+        </view>
+        <text class="attendee-company">{{item.company}}</text>
+        <text class="attendee-title">{{item.title}}</text>
+        <view class="attendee-tags">
+          <text class="tag" wx:for="{{item.tags}}" wx:key="*this">{{item}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>

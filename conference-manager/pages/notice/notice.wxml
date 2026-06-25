@@ -1,0 +1,18 @@
+<!-- 通知页面 -->
+<view class="container">
+  <view class="notice-list">
+    <view class="notice-item {{item.isRead?'read':''}}" wx:for="{{noticeList}}" wx:key="id" bindtap="viewNoticeDetail" data-id="{{item.id}}">
+      <view class="notice-dot" wx:if="{{!item.isRead}}"></view>
+      <view class="notice-content">
+        <view class="notice-header">
+          <text class="notice-title">{{item.title}}</text>
+          <text class="notice-time">{{item.time}}</text>
+        </view>
+        <text class="notice-summary">{{item.summary}}</text>
+        <view class="notice-tags">
+          <text class="tag {{item.type}}">{{item.typeText}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>

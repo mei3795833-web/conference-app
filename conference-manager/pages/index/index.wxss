@@ -1,0 +1,169 @@
+/* 首页样式 */
+.conference-card {
+  padding: 0;
+  overflow: hidden;
+}
+
+.conference-header {
+  position: relative;
+  height: 300rpx;
+}
+
+.conference-banner {
+  width: 100%;
+  height: 100%;
+}
+
+.conference-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 30rpx;
+  background: linear-gradient(transparent, rgba(0,0,0,0.7));
+}
+
+.conference-name {
+  color: #fff;
+  font-size: 36rpx;
+  font-weight: bold;
+  display: block;
+}
+
+.conference-date {
+  color: rgba(255,255,255,0.9);
+  font-size: 26rpx;
+  margin-top: 10rpx;
+  display: block;
+}
+
+.conference-details {
+  padding: 20rpx 30rpx;
+}
+
+.detail-item {
+  display: flex;
+  align-items: center;
+  padding: 12rpx 0;
+}
+
+.detail-icon {
+  width: 32rpx;
+  height: 32rpx;
+  margin-right: 16rpx;
+}
+
+.detail-text {
+  font-size: 28rpx;
+  color: #666;
+}
+
+.grid {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.grid-item {
+  width: 25%;
+  text-align: center;
+  padding: 20rpx 0;
+}
+
+.grid-icon {
+  width: 80rpx;
+  height: 80rpx;
+  margin-bottom: 12rpx;
+}
+
+.grid-text {
+  font-size: 24rpx;
+  color: #666;
+}
+
+.more {
+  font-size: 26rpx;
+  color: #1AAD19;
+  float: right;
+}
+
+.timeline {
+  position: relative;
+  padding-left: 40rpx;
+}
+
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 15rpx;
+  top: 0;
+  bottom: 0;
+  width: 2rpx;
+  background: #e0e0e0;
+}
+
+.timeline-item {
+  position: relative;
+  padding-bottom: 30rpx;
+}
+
+.timeline-dot {
+  position: absolute;
+  left: -33rpx;
+  top: 8rpx;
+  width: 16rpx;
+  height: 16rpx;
+  border-radius: 50%;
+  background: #1AAD19;
+  border: 4rpx solid #fff;
+}
+
+.timeline-dot.completed {
+  background: #bdbdbd;
+}
+
+.timeline-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.time {
+  font-size: 24rpx;
+  color: #999;
+}
+
+.title {
+  font-size: 30rpx;
+  color: #333;
+  font-weight: 500;
+  margin-top: 8rpx;
+}
+
+.location {
+  font-size: 26rpx;
+  color: #666;
+  margin-top: 6rpx;
+}
+
+.stats-grid {
+  display: flex;
+  justify-content: space-around;
+  padding: 20rpx 0;
+}
+
+.stat-item {
+  text-align: center;
+}
+
+.stat-number {
+  font-size: 48rpx;
+  font-weight: bold;
+  color: #1AAD19;
+  display: block;
+}
+
+.stat-label {
+  font-size: 24rpx;
+  color: #999;
+  margin-top: 8rpx;
+  display: block;
+}

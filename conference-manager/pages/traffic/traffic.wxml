@@ -1,0 +1,154 @@
+<!-- 交通页面 - 交通指导 -->
+<view class="container">
+  <!-- 地图区域 -->
+  <view class="map-container">
+    <map
+      id="trafficMap"
+      longitude="{{currentLocation.longitude}}"
+      latitude="{{currentLocation.latitude}}"
+      scale="14"
+      markers="{{markers}}"
+      polyline="{{polyline}}"
+      show-location
+      bindmarkertap="onMarkerTap"
+      style="width: 100%; height: 400rpx;"
+    ></map>
+    <view class="map-overlay">
+      <view class="location-btn" bindtap="getCurrentLocation">
+        <image src="/images/location.png"></image>
+      </view>
+      <view class="navigate-btn" bindtap="navigateToConference">
+        <text>导航去会场</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 交通方式选择 -->
+  <view class="card">
+    <view class="card-title">前往会场</view>
+    <view class="transport-tabs">
+      <view class="transport-tab {{transportType=='public'?'active':''}}" bindtap="switchTransport" data-type="public">
+        <image src="/images/bus.png"></image>
+        <text>公共交通</text>
+      </view>
+      <view class="transport-tab {{transportType=='taxi'?'active':''}}" bindtap="switchTransport" data-type="taxi">
+        <image src="/images/taxi.png"></image>
+        <text>打车</text>
+      </view>
+      <view class="transport-tab {{transportType=='drive'?'active':''}}" bindtap="switchTransport" data-type="drive">
+        <image src="/images/car.png"></image>
+        <text>自驾</text>
+      </view>
+      <view class="transport-tab {{transportType=='shuttle'?'active':''}}" bindtap="switchTransport" data-type="shuttle">
+        <image src="/images/shuttle.png"></image>
+        <text>接驳车</text>
+      </view>
+    </view>
+
+    <!-- 公共交通 -->
+    <view class="transport-content" wx:if="{{transportType=='public'}}">
+      <view class="route-item" wx:for="{{publicRoutes}}" wx:key="id">
+        <view class="route-header">
+          <text class="route-name">{{item.name}}</text>
+          <text class="route-time">约{{item.duration}}分钟</text>
+        </view>
+        <view class="route-detail">
+          <text class="route-stations">{{item.stations}}</text>
+          <text class="route-price">{{item.price}}</text>
+        </view>
+        <view class="route-tags">
+          <text class="tag" wx:for="{{item.tags}}" wx:key="*this">{{item}}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 打车 -->
+    <view class="transport-content" wx:if="{{transportType=='taxi'}}">
+      <view class="taxi-info">
+        <text class="taxi-estimate">预估费用: {{taxiEstimate.price}}</text>
+        <text class="taxi-duration">预计用时: {{taxiEstimate.duration}}</text>
+        <button class="btn-primary" bindtap="callTaxi">立即叫车</button>
+      </view>
+    </view>
+
+    <!-- 自驾 -->
+    <view class="transport-content" wx:if="{{transportType=='drive'}}">
+      <view class="drive-info">
+        <view class="parking-item" wx:for="{{parkingList}}" wx:key="id">
+          <view class="parking-header">
+            <text class="parking-name">{{item.name}}</text>
+            <text class="parking-status {{item.status}}">{{item.statusText}}</text>
+          </view>
+          <view class="parking-detail">
+            <text>剩余车位: {{item.available}}/{{item.total}}</text>
+            <text>收费标准: {{item.price}}</text>
+          </view>
+          <view class="parking-distance">
+            <image src="/images/distance.png"></image>
+            <text>距会场 {{item.distance}}米</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 接驳车 -->
+    <view class="transport-content" wx:if="{{transportType=='shuttle'}}">
+      <view class="shuttle-list">
+        <view class="shuttle-item" wx:for="{{shuttleRoutes}}" wx:key="id">
+          <view class="shuttle-header">
+            <text class="shuttle-name">{{item.name}}</text>
+            <text class="shuttle-status {{item.status}}">{{item.statusText}}</text>
+          </view>
+          <view class="shuttle-stops">
+            <text wx:for="{{item.stops}}" wx:key="*this">{{item}}</text>
+          </view>
+          <view class="shuttle-schedule">
+            <text>发车时间: {{item.schedule}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 实时路况 -->
+  <view class="card">
+    <view class="card-title">实时路况</view>
+    <view class="traffic-status">
+      <view class="status-item">
+        <view class="status-indicator green"></view>
+        <text>会场周边: 畅通</text>
+      </view>
+      <view class="status-item">
+        <view class="status-indicator yellow"></view>
+        <text>主干道: 缓行</text>
+      </view>
+      <view class="status-item">
+        <view class="status-indicator red"></view>
+        <text>高速入口: 拥堵</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 紧急联系 -->
+  <view class="card">
+    <view class="card-title">交通服务</view>
+    <view class="service-list">
+      <view class="service-item" bindtap="makePhoneCall" data-phone="400-888-8888">
+        <image src="/images/phone.png"></image>
+        <view class="service-info">
+          <text class="service-name">大会交通热线</text>
+          <text class="service-phone">400-888-8888</text>
+        </view>
+        <text class="call-btn">拨打</text>
+      </view>
+      <view class="service-item" bindtap="makePhoneCall" data-phone="400-999-9999">
+        <image src="/images/phone.png"></image>
+        <view class="service-info">
+          <text class="service-name">紧急救援</text>
+          <text class="service-phone">400-999-9999</text>
+        </view>
+        <text class="call-btn">拨打</text>
+      </view>
+    </view>
+  </view>
+</view>

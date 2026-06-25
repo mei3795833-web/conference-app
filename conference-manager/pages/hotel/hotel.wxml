@@ -1,0 +1,115 @@
+<!-- 住宿页面 - 住宿安排 -->
+<view class="container">
+  <!-- 我的住宿 -->
+  <view class="card my-hotel" wx:if="{{myHotel}}">
+    <view class="card-title">我的住宿</view>
+    <view class="hotel-info">
+      <image class="hotel-image" src="{{myHotel.image}}"></image>
+      <view class="hotel-detail">
+        <text class="hotel-name">{{myHotel.name}}</text>
+        <text class="hotel-address">{{myHotel.address}}</text>
+        <view class="hotel-tags">
+          <text class="tag" wx:for="{{myHotel.tags}}" wx:key="*this">{{item}}</text>
+        </view>
+        <view class="room-info">
+          <text class="room-type">{{myHotel.roomType}}</text>
+          <text class="room-number">{{myHotel.roomNumber}}</text>
+        </view>
+        <view class="stay-info">
+          <text>入住: {{myHotel.checkIn}}</text>
+          <text>退房: {{myHotel.checkOut}}</text>
+        </view>
+      </view>
+    </view>
+    <view class="hotel-actions">
+      <button class="btn-secondary" bindtap="viewHotelDetail">酒店详情</button>
+      <button class="btn-primary" bindtap="navigateToHotel">导航去酒店</button>
+    </view>
+  </view>
+
+  <!-- 酒店列表 -->
+  <view class="card">
+    <view class="card-title">
+      <text>推荐酒店</text>
+      <view class="filter-bar">
+        <picker mode="selector" range="{{priceRanges}}" bindchange="filterByPrice">
+          <view class="filter-item">
+            <text>{{selectedPriceRange}}</text>
+            <image src="/images/arrow-down.png"></image>
+          </view>
+        </picker>
+        <picker mode="selector" range="{{distanceRanges}}" bindchange="filterByDistance">
+          <view class="filter-item">
+            <text>{{selectedDistanceRange}}</text>
+            <image src="/images/arrow-down.png"></image>
+          </view>
+        </picker>
+      </view>
+    </view>
+    <view class="hotel-list">
+      <view class="hotel-item" wx:for="{{hotelList}}" wx:key="id" bindtap="selectHotel" data-id="{{item.id}}">
+        <image class="hotel-thumb" src="{{item.image}}"></image>
+        <view class="hotel-content">
+          <view class="hotel-header">
+            <text class="hotel-name">{{item.name}}</text>
+            <view class="hotel-rating">
+              <text class="rating-score">{{item.rating}}</text>
+              <text class="rating-text">分</text>
+            </view>
+          </view>
+          <view class="hotel-tags">
+            <text class="tag" wx:for="{{item.tags}}" wx:key="*this">{{item}}</text>
+          </view>
+          <view class="hotel-location">
+            <image src="/images/location.png"></image>
+            <text>距会场 {{item.distance}}米</text>
+          </view>
+          <view class="hotel-footer">
+            <view class="price-info">
+              <text class="price-symbol">¥</text>
+              <text class="price-number">{{item.price}}</text>
+              <text class="price-unit">/晚</text>
+            </view>
+            <view class="room-status {{item.roomStatus}}">
+              {{item.roomStatusText}}
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 住宿统计 -->
+  <view class="card">
+    <view class="card-title">住宿统计</view>
+    <view class="stats-grid">
+      <view class="stat-item">
+        <text class="stat-number">{{stats.totalRooms}}</text>
+        <text class="stat-label">总房间数</text>
+      </view>
+      <view class="stat-item">
+        <text class="stat-number">{{stats.occupiedRooms}}</text>
+        <text class="stat-label">已入住</text>
+      </view>
+      <view class="stat-item">
+        <text class="stat-number">{{stats.availableRooms}}</text>
+        <text class="stat-label">剩余房间</text>
+      </view>
+      <view class="stat-item">
+        <text class="stat-number">{{stats.checkInToday}}</text>
+        <text class="stat-label">今日入住</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 入住须知 -->
+  <view class="card">
+    <view class="card-title">入住须知</view>
+    <view class="notice-list">
+      <view class="notice-item" wx:for="{{notices}}" wx:key="id">
+        <view class="notice-dot"></view>
+        <text class="notice-text">{{item.content}}</text>
+      </view>
+    </view>
+  </view>
+</view>
