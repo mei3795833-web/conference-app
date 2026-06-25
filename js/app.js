@@ -25,6 +25,14 @@ const App = {
     adminPassword: 'admin123',
     isAdminLoggedIn: false,
 
+    // 多用户配置
+    users: {
+        'admin123': { role: 'admin', name: '管理员' },
+        'staff123': { role: 'staff', name: '工作人员' },
+        'view123': { role: 'viewer', name: '查看员' }
+    },
+    currentUser: null,
+
     // 初始化
     init() {
         this.loadLocalData();
@@ -588,7 +596,7 @@ const App = {
 
     // 渲染管理页面
     renderAdmin() {
-        if (!this.isAdminLoggedIn) {
+        if (!this.currentUser) {
             return this.renderAdminLogin();
         }
         return this.renderAdminPanel();
@@ -618,69 +626,91 @@ const App = {
     // 管理员登录
     adminLogin() {
         const password = document.getElementById('adminPassword').value;
-        if (password === this.adminPassword) {
-            this.isAdminLoggedIn = true;
+        const user = this.users[password];
+        
+        if (user) {
+            this.currentUser = user;
             this.loadPage('admin');
         } else {
             document.getElementById('loginError').style.display = 'block';
         }
     },
 
+    // 检查权限
+    hasPermission(permission) {
+        if (!this.currentUser) return false;
+        const permissions = {
+            'admin': ['edit', 'view', 'stats'],
+            'staff': ['view', 'stats'],
+            'viewer': ['view']
+        };
+        return permissions[this.currentUser.role]?.includes(permission) || false;
+    },
+
     // 渲染管理面板
     renderAdminPanel() {
         const conf = this.data.currentConference;
+        const user = this.currentUser;
+        const canEdit = this.hasPermission('edit');
+        const canViewStats = this.hasPermission('stats');
+        
         return `
             <div class="page">
                 <div class="card">
                     <div class="card-title">
                         <i class="fas fa-cog"></i> 后台管理
-                        <span style="float: right; font-size: 12px; color: #667eea; cursor: pointer;" onclick="App.adminLogout()">退出登录</span>
+                        <span style="float: right; font-size: 12px; color: #667eea;">${user.name} (${user.role})</span>
                     </div>
-                    <div style="font-size: 14px; color: #999; margin-bottom: 16px;">修改大会信息后点击保存即可更新</div>
+                    <div style="font-size: 14px; color: #999; margin-bottom: 16px;">
+                        ${canEdit ? '修改大会信息后点击保存即可更新' : '您只有查看权限'}
+                    </div>
                     
                     <div style="margin-bottom: 16px;">
                         <label style="display: block; font-size: 14px; color: #666; margin-bottom: 6px;">大会名称</label>
-                        <input type="text" id="editConfName" value="${conf.name}" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 14px; box-sizing: border-box;">
+                        <input type="text" id="editConfName" value="${conf.name}" ${!canEdit ? 'disabled' : ''} style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 14px; box-sizing: border-box; ${!canEdit ? 'background: #f5f5f5;' : ''}">
                     </div>
                     
                     <div style="margin-bottom: 16px;">
                         <label style="display: block; font-size: 14px; color: #666; margin-bottom: 6px;">举办地点</label>
-                        <input type="text" id="editConfLocation" value="${conf.location}" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 14px; box-sizing: border-box;">
+                        <input type="text" id="editConfLocation" value="${conf.location}" ${!canEdit ? 'disabled' : ''} style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 14px; box-sizing: border-box; ${!canEdit ? 'background: #f5f5f5;' : ''}">
                     </div>
                     
                     <div style="margin-bottom: 16px;">
                         <label style="display: block; font-size: 14px; color: #666; margin-bottom: 6px;">详细地址</label>
-                        <input type="text" id="editConfAddress" value="${conf.address}" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 14px; box-sizing: border-box;">
+                        <input type="text" id="editConfAddress" value="${conf.address}" ${!canEdit ? 'disabled' : ''} style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 14px; box-sizing: border-box; ${!canEdit ? 'background: #f5f5f5;' : ''}">
                     </div>
                     
                     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px;">
                         <div>
                             <label style="display: block; font-size: 14px; color: #666; margin-bottom: 6px;">开始日期</label>
-                            <input type="date" id="editConfStartDate" value="${conf.startDate}" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 14px; box-sizing: border-box;">
+                            <input type="date" id="editConfStartDate" value="${conf.startDate}" ${!canEdit ? 'disabled' : ''} style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 14px; box-sizing: border-box; ${!canEdit ? 'background: #f5f5f5;' : ''}">
                         </div>
                         <div>
                             <label style="display: block; font-size: 14px; color: #666; margin-bottom: 6px;">结束日期</label>
-                            <input type="date" id="editConfEndDate" value="${conf.endDate}" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 14px; box-sizing: border-box;">
+                            <input type="date" id="editConfEndDate" value="${conf.endDate}" ${!canEdit ? 'disabled' : ''} style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 14px; box-sizing: border-box; ${!canEdit ? 'background: #f5f5f5;' : ''}">
                         </div>
                     </div>
                     
                     <div style="margin-bottom: 16px;">
                         <label style="display: block; font-size: 14px; color: #666; margin-bottom: 6px;">大会状态</label>
-                        <select id="editConfStatus" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 14px; box-sizing: border-box;">
+                        <select id="editConfStatus" ${!canEdit ? 'disabled' : ''} style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 14px; box-sizing: border-box; ${!canEdit ? 'background: #f5f5f5;' : ''}">
                             <option value="upcoming" ${conf.status === 'upcoming' ? 'selected' : ''}>即将开始</option>
                             <option value="ongoing" ${conf.status === 'ongoing' ? 'selected' : ''}>进行中</option>
                             <option value="completed" ${conf.status === 'completed' ? 'selected' : ''}>已结束</option>
                         </select>
                     </div>
                     
+                    ${canEdit ? `
                     <button class="btn btn-success" style="width: 100%;" onclick="App.saveConferenceData()">
                         <i class="fas fa-save"></i> 保存修改
                     </button>
                     <div id="saveSuccess" style="color: #27ae60; font-size: 14px; margin-top: 12px; display: none; text-align: center;">
                         <i class="fas fa-check-circle"></i> 保存成功！
                     </div>
+                    ` : '<div style="color: #999; font-size: 14px; text-align: center; padding: 12px;">您没有编辑权限</div>'}
                 </div>
 
+                ${canViewStats ? `
                 <div class="card">
                     <div class="card-title">数据统计</div>
                     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
@@ -694,7 +724,9 @@ const App = {
                         </div>
                     </div>
                 </div>
+                ` : ''}
 
+                <button class="btn btn-primary" style="margin: 12px; width: calc(100% - 24px);" onclick="App.adminLogout()">退出登录</button>
                 <button class="btn btn-primary" style="margin: 12px; width: calc(100% - 24px);" onclick="App.loadPage('home')">返回首页</button>
             </div>
         `;
@@ -734,7 +766,7 @@ const App = {
 
     // 管理员退出
     adminLogout() {
-        this.isAdminLoggedIn = false;
+        this.currentUser = null;
         this.loadPage('home');
     },
 
@@ -760,4 +792,5 @@ const App = {
 document.addEventListener('DOMContentLoaded', () => {
     App.init();
 });
+
 
