@@ -366,13 +366,67 @@ const App = {
                 </div>
 
                 <div class="card">
-                    <div class="card-title">我的住宿</div>
-                    <div style="text-align: center; padding: 40px 20px;">
-                        <i class="fas fa-key" style="font-size: 48px; color: #ddd; margin-bottom: 16px;"></i>
-                        <div style="color: #999; font-size: 14px;">您尚未预订住宿</div>
-                        <button class="btn btn-primary" style="margin-top: 16px;" onclick="alert('预订功能')">
-                            立即预订
-                        </button>
+                    <div class="card-title">酒店预订</div>
+                    <div style="font-size: 14px; color: #999; margin-bottom: 16px;">请填写预订信息，提交后工作人员会联系您确认</div>
+                    
+                    <div style="margin-bottom: 12px;">
+                        <label style="display: block; font-size: 14px; color: #666; margin-bottom: 6px;">姓名 *</label>
+                        <input type="text" id="hotelName" placeholder="请输入姓名" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 14px; box-sizing: border-box;">
+                    </div>
+                    
+                    <div style="margin-bottom: 12px;">
+                        <label style="display: block; font-size: 14px; color: #666; margin-bottom: 6px;">手机号 *</label>
+                        <input type="tel" id="hotelPhone" placeholder="请输入手机号" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 14px; box-sizing: border-box;">
+                    </div>
+                    
+                    <div style="margin-bottom: 12px;">
+                        <label style="display: block; font-size: 14px; color: #666; margin-bottom: 6px;">选择酒店</label>
+                        <select id="hotelSelect" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 14px; box-sizing: border-box;">
+                            <option value="">请选择酒店</option>
+                            <option value="main">上海国际会议中心酒店（主会场）</option>
+                            <option value="a">备选酒店A（距离会场500米）</option>
+                            <option value="b">备选酒店B（距离会场1公里，班车接送）</option>
+                        </select>
+                    </div>
+                    
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px;">
+                        <div>
+                            <label style="display: block; font-size: 14px; color: #666; margin-bottom: 6px;">入住日期</label>
+                            <input type="date" id="hotelCheckIn" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 14px; box-sizing: border-box;">
+                        </div>
+                        <div>
+                            <label style="display: block; font-size: 14px; color: #666; margin-bottom: 6px;">退房日期</label>
+                            <input type="date" id="hotelCheckOut" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 14px; box-sizing: border-box;">
+                        </div>
+                    </div>
+                    
+                    <div style="margin-bottom: 12px;">
+                        <label style="display: block; font-size: 14px; color: #666; margin-bottom: 6px;">房型选择</label>
+                        <select id="hotelRoomType" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 14px; box-sizing: border-box;">
+                            <option value="">请选择房型</option>
+                            <option value="single">单人间</option>
+                            <option value="double">双人间</option>
+                            <option value="suite">套房</option>
+                        </select>
+                    </div>
+                    
+                    <div style="margin-bottom: 16px;">
+                        <label style="display: block; font-size: 14px; color: #666; margin-bottom: 6px;">备注</label>
+                        <textarea id="hotelRemark" placeholder="特殊需求请在此说明" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 14px; box-sizing: border-box; height: 80px; resize: vertical;"></textarea>
+                    </div>
+                    
+                    <button class="btn btn-success" style="width: 100%;" onclick="App.submitHotelBooking()">
+                        <i class="fas fa-paper-plane"></i> 提交预订
+                    </button>
+                    <div id="hotelSubmitSuccess" style="color: #27ae60; font-size: 14px; margin-top: 12px; display: none; text-align: center;">
+                        <i class="fas fa-check-circle"></i> 提交成功！工作人员会尽快联系您确认
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-title">我的预订记录</div>
+                    <div id="hotelBookingList" style="font-size: 14px; color: #999; text-align: center; padding: 20px;">
+                        暂无预订记录
                     </div>
                 </div>
             </div>
@@ -770,6 +824,336 @@ const App = {
         this.loadPage('home');
     },
 
+    // 提交酒店预订
+    submitHotelBooking() {
+        const name = document.getElementById('hotelName').value.trim();
+        const phone = document.getElementById('hotelPhone').value.trim();
+        const hotel = document.getElementById('hotelSelect').value;
+        const checkIn = document.getElementById('hotelCheckIn').value;
+        const checkOut = document.getElementById('hotelCheckOut').value;
+        const roomType = document.getElementById('hotelRoomType').value;
+        const remark = document.getElementById('hotelRemark').value.trim();
+        
+        if (!name || !phone || !hotel || !checkIn || !checkOut || !roomType) {
+            alert('请填写完整信息（带*为必填）');
+            return;
+        }
+        
+        if (!/^1[3-9]\d{9}$/.test(phone)) {
+            alert('请输入正确的手机号');
+            return;
+        }
+        
+        if (new Date(checkIn) >= new Date(checkOut)) {
+            alert('退房日期必须晚于入住日期');
+            return;
+        }
+        
+        const booking = {
+            id: Date.now().toString(),
+            name,
+            phone,
+            hotel,
+            checkIn,
+            checkOut,
+            roomType,
+            remark,
+            status: 'pending',
+            submitTime: new Date().toLocaleString('zh-CN')
+        };
+        
+        // 保存到本地存储
+        let bookings = JSON.parse(localStorage.getItem('hotelBookings') || '[]');
+        bookings.push(booking);
+        localStorage.setItem('hotelBookings', JSON.stringify(bookings));
+        
+        // 显示成功提示
+        document.getElementById('hotelSubmitSuccess').style.display = 'block';
+        
+        // 更新预订列表
+        this.updateHotelBookingList();
+        
+        // 清空表单
+        document.getElementById('hotelName').value = '';
+        document.getElementById('hotelPhone').value = '';
+        document.getElementById('hotelSelect').value = '';
+        document.getElementById('hotelCheckIn').value = '';
+        document.getElementById('hotelCheckOut').value = '';
+        document.getElementById('hotelRoomType').value = '';
+        document.getElementById('hotelRemark').value = '';
+        
+        setTimeout(() => {
+            document.getElementById('hotelSubmitSuccess').style.display = 'none';
+        }, 3000);
+    },
+
+    // 更新预订列表显示
+    updateHotelBookingList() {
+        const bookings = JSON.parse(localStorage.getItem('hotelBookings') || '[]');
+        const listEl = document.getElementById('hotelBookingList');
+        
+        if (bookings.length === 0) {
+            listEl.innerHTML = '<div style="font-size: 14px; color: #999; text-align: center; padding: 20px;">暂无预订记录</div>';
+            return;
+        }
+        
+        const hotelNames = {
+            'main': '主会场酒店',
+            'a': '备选酒店A',
+            'b': '备选酒店B'
+        };
+        
+        const roomTypeNames = {
+            'single': '单人间',
+            'double': '双人间',
+            'suite': '套房'
+        };
+        
+        const statusMap = {
+            'pending': { text: '待确认', color: '#f39c12' },
+            'confirmed': { text: '已确认', color: '#27ae60' },
+            'cancelled': { text: '已取消', color: '#e74c3c' }
+        };
+        
+        listEl.innerHTML = bookings.map(b => {
+            const status = statusMap[b.status] || statusMap['pending'];
+            return `
+                <div style="border: 1px solid #eee; border-radius: 8px; padding: 12px; margin-bottom: 8px; text-align: left;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                        <span style="font-weight: 600; color: #333;">${hotelNames[b.hotel] || b.hotel}</span>
+                        <span style="font-size: 12px; color: ${status.color}; background: ${status.color}15; padding: 2px 8px; border-radius: 4px;">${status.text}</span>
+                    </div>
+                    <div style="font-size: 13px; color: #666; line-height: 1.6;">
+                        <div>姓名：${b.name}</div>
+                        <div>房型：${roomTypeNames[b.roomType] || b.roomType}</div>
+                        <div>入住：${b.checkIn} 至 ${b.checkOut}</div>
+                        <div>提交时间：${b.submitTime}</div>
+                    </div>
+                </div>
+            `;
+        }).join('');
+    },
+
+
+    // 提交酒店预订
+    submitHotelBooking() {
+        const name = document.getElementById('hotelName').value.trim();
+        const phone = document.getElementById('hotelPhone').value.trim();
+        const hotel = document.getElementById('hotelSelect').value;
+        const checkIn = document.getElementById('hotelCheckIn').value;
+        const checkOut = document.getElementById('hotelCheckOut').value;
+        const roomType = document.getElementById('hotelRoomType').value;
+        const remark = document.getElementById('hotelRemark').value.trim();
+        
+        if (!name || !phone || !hotel || !checkIn || !checkOut || !roomType) {
+            alert('请填写完整信息（带*为必填）');
+            return;
+        }
+        
+        if (!/^1[3-9]\\d{9}$/.test(phone)) {
+            alert('请输入正确的手机号');
+            return;
+        }
+        
+        if (new Date(checkIn) >= new Date(checkOut)) {
+            alert('退房日期必须晚于入住日期');
+            return;
+        }
+        
+        const booking = {
+            id: Date.now().toString(),
+            name,
+            phone,
+            hotel,
+            checkIn,
+            checkOut,
+            roomType,
+            remark,
+            status: 'pending',
+            submitTime: new Date().toLocaleString('zh-CN')
+        };
+        
+        // 保存到本地存储
+        let bookings = JSON.parse(localStorage.getItem('hotelBookings') || '[]');
+        bookings.push(booking);
+        localStorage.setItem('hotelBookings', JSON.stringify(bookings));
+        
+        // 显示成功提示
+        document.getElementById('hotelSubmitSuccess').style.display = 'block';
+        
+        // 更新预订列表
+        this.updateHotelBookingList();
+        
+        // 清空表单
+        document.getElementById('hotelName').value = '';
+        document.getElementById('hotelPhone').value = '';
+        document.getElementById('hotelSelect').value = '';
+        document.getElementById('hotelCheckIn').value = '';
+        document.getElementById('hotelCheckOut').value = '';
+        document.getElementById('hotelRoomType').value = '';
+        document.getElementById('hotelRemark').value = '';
+        
+        setTimeout(() => {
+            document.getElementById('hotelSubmitSuccess').style.display = 'none';
+        }, 3000);
+    },
+
+    // 更新预订列表显示
+    updateHotelBookingList() {
+        const bookings = JSON.parse(localStorage.getItem('hotelBookings') || '[]');
+        const listEl = document.getElementById('hotelBookingList');
+        
+        if (bookings.length === 0) {
+            listEl.innerHTML = '<div style="font-size: 14px; color: #999; text-align: center; padding: 20px;">暂无预订记录</div>';
+            return;
+        }
+        
+        const hotelNames = {
+            'main': '主会场酒店',
+            'a': '备选酒店A',
+            'b': '备选酒店B'
+        };
+        
+        const roomTypeNames = {
+            'single': '单人间',
+            'double': '双人间',
+            'suite': '套房'
+        };
+        
+        const statusMap = {
+            'pending': { text: '待确认', color: '#f39c12' },
+            'confirmed': { text: '已确认', color: '#27ae60' },
+            'cancelled': { text: '已取消', color: '#e74c3c' }
+        };
+        
+        listEl.innerHTML = bookings.map(b => {
+            const status = statusMap[b.status] || statusMap['pending'];
+            return 
+                <div style="border: 1px solid #eee; border-radius: 8px; padding: 12px; margin-bottom: 8px; text-align: left;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                        <span style="font-weight: 600; color: #333;"></span>
+                        <span style="font-size: 12px; color: ; background: 15; padding: 2px 8px; border-radius: 4px;"></span>
+                    </div>
+                    <div style="font-size: 13px; color: #666; line-height: 1.6;">
+                        <div>姓名：</div>
+                        <div>房型：</div>
+                        <div>入住： 至 </div>
+                        <div>提交时间：</div>
+                    </div>
+                </div>
+            ;
+        }).join('');
+    },
+
+    // 提交酒店预订
+    submitHotelBooking() {
+        const name = document.getElementById('hotelName').value.trim();
+        const phone = document.getElementById('hotelPhone').value.trim();
+        const hotel = document.getElementById('hotelSelect').value;
+        const checkIn = document.getElementById('hotelCheckIn').value;
+        const checkOut = document.getElementById('hotelCheckOut').value;
+        const roomType = document.getElementById('hotelRoomType').value;
+        const remark = document.getElementById('hotelRemark').value.trim();
+        
+        if (!name || !phone || !hotel || !checkIn || !checkOut || !roomType) {
+            alert('请填写完整信息（带*为必填）');
+            return;
+        }
+        
+        if (!/^1[3-9]\\d{9}$/.test(phone)) {
+            alert('请输入正确的手机号');
+            return;
+        }
+        
+        if (new Date(checkIn) >= new Date(checkOut)) {
+            alert('退房日期必须晚于入住日期');
+            return;
+        }
+        
+        const booking = {
+            id: Date.now().toString(),
+            name,
+            phone,
+            hotel,
+            checkIn,
+            checkOut,
+            roomType,
+            remark,
+            status: 'pending',
+            submitTime: new Date().toLocaleString('zh-CN')
+        };
+        
+        // 保存到本地存储
+        let bookings = JSON.parse(localStorage.getItem('hotelBookings') || '[]');
+        bookings.push(booking);
+        localStorage.setItem('hotelBookings', JSON.stringify(bookings));
+        
+        // 显示成功提示
+        document.getElementById('hotelSubmitSuccess').style.display = 'block';
+        
+        // 更新预订列表
+        this.updateHotelBookingList();
+        
+        // 清空表单
+        document.getElementById('hotelName').value = '';
+        document.getElementById('hotelPhone').value = '';
+        document.getElementById('hotelSelect').value = '';
+        document.getElementById('hotelCheckIn').value = '';
+        document.getElementById('hotelCheckOut').value = '';
+        document.getElementById('hotelRoomType').value = '';
+        document.getElementById('hotelRemark').value = '';
+        
+        setTimeout(() => {
+            document.getElementById('hotelSubmitSuccess').style.display = 'none';
+        }, 3000);
+    },
+
+    // 更新预订列表显示
+    updateHotelBookingList() {
+        const bookings = JSON.parse(localStorage.getItem('hotelBookings') || '[]');
+        const listEl = document.getElementById('hotelBookingList');
+        
+        if (bookings.length === 0) {
+            listEl.innerHTML = '<div style="font-size: 14px; color: #999; text-align: center; padding: 20px;">暂无预订记录</div>';
+            return;
+        }
+        
+        const hotelNames = {
+            'main': '主会场酒店',
+            'a': '备选酒店A',
+            'b': '备选酒店B'
+        };
+        
+        const roomTypeNames = {
+            'single': '单人间',
+            'double': '双人间',
+            'suite': '套房'
+        };
+        
+        const statusMap = {
+            'pending': { text: '待确认', color: '#f39c12' },
+            'confirmed': { text: '已确认', color: '#27ae60' },
+            'cancelled': { text: '已取消', color: '#e74c3c' }
+        };
+        
+        listEl.innerHTML = bookings.map(b => {
+            const status = statusMap[b.status] || statusMap['pending'];
+            return 
+                <div style="border: 1px solid #eee; border-radius: 8px; padding: 12px; margin-bottom: 8px; text-align: left;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                        <span style="font-weight: 600; color: #333;"></span>
+                        <span style="font-size: 12px; color: ; background: 15; padding: 2px 8px; border-radius: 4px;"></span>
+                    </div>
+                    <div style="font-size: 13px; color: #666; line-height: 1.6;">
+                        <div>姓名：</div>
+                        <div>房型：</div>
+                        <div>入住： 至 </div>
+                        <div>提交时间：</div>
+                    </div>
+                </div>
+            ;
+        }).join('');
+    },
     // 加载本地数据
     loadLocalData() {
         const saved = localStorage.getItem('conferenceData');
@@ -792,5 +1176,7 @@ const App = {
 document.addEventListener('DOMContentLoaded', () => {
     App.init();
 });
+
+
 
 
