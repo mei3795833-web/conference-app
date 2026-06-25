@@ -42,12 +42,12 @@ const App = {
 
     // 绑定事件
     bindEvents() {
-        // 顶部导航切换
-        document.getElementById('topNav').addEventListener('click', (e) => {
-            const navItem = e.target.closest('.nav-item');
-            if (navItem) {
+        // TabBar切换
+        document.getElementById('tabBar').addEventListener('click', (e) => {
+            const tabItem = e.target.closest('.tab-item');
+            if (tabItem) {
                 e.preventDefault();
-                const page = navItem.dataset.page;
+                const page = tabItem.dataset.page;
                 this.switchTab(page);
             }
         });
@@ -55,8 +55,8 @@ const App = {
 
     // 切换Tab
     switchTab(page) {
-        // 更新顶部导航状态
-        document.querySelectorAll('.nav-item').forEach(item => {
+        // 更新TabBar状态
+        document.querySelectorAll('.tab-item').forEach(item => {
             item.classList.remove('active');
         });
         document.querySelector(`[data-page="${page}"]`).classList.add('active');
