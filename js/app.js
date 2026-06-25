@@ -420,7 +420,161 @@ const App = {
 
     // 页面跳转
     navigateTo(page) {
-        alert(`跳转到 ${page} 页面`);
+        // 定义页面路由
+        const routes = {
+            'agenda': this.renderAgenda.bind(this),
+            'attendee': this.renderAttendee.bind(this),
+            'notice': this.renderNotice.bind(this)
+        };
+        
+        if (routes[page]) {
+            const app = document.getElementById('app');
+            app.innerHTML = routes[page]();
+        } else {
+            alert(`页面 ${page} 正在开发中`);
+        }
+    },
+
+    // 渲染会议议程页面
+    renderAgenda() {
+        return `
+            <div class="page">
+                <div class="card">
+                    <div class="card-title">会议议程</div>
+                    <div class="timeline">
+                        <div class="timeline-item">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-content">
+                                <div class="time">08:30</div>
+                                <div class="title">签到入场</div>
+                                <div class="location">大厅</div>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-content">
+                                <div class="time">09:00</div>
+                                <div class="title">开幕式</div>
+                                <div class="location">主会场</div>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-content">
+                                <div class="time">10:30</div>
+                                <div class="title">主题演讲：科技创新</div>
+                                <div class="location">主会场</div>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-content">
+                                <div class="time">12:00</div>
+                                <div class="title">午餐</div>
+                                <div class="location">餐厅</div>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-content">
+                                <div class="time">14:00</div>
+                                <div class="title">分论坛：人工智能</div>
+                                <div class="location">A厅</div>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-content">
+                                <div class="time">16:00</div>
+                                <div class="title">圆桌讨论</div>
+                                <div class="location">B厅</div>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-dot completed"></div>
+                            <div class="timeline-content">
+                                <div class="time">18:00</div>
+                                <div class="title">晚宴</div>
+                                <div class="location">宴会厅</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <button class="btn btn-primary" style="margin: 12px; width: calc(100% - 24px);" onclick="App.loadPage('home')">返回首页</button>
+            </div>
+        `;
+    },
+
+    // 渲染参会人员页面
+    renderAttendee() {
+        return `
+            <div class="page">
+                <div class="card">
+                    <div class="card-title">参会人员</div>
+                    <div class="list-item">
+                        <div class="list-icon"><i class="fas fa-user-tie"></i></div>
+                        <div class="list-content">
+                            <div class="list-title">张三</div>
+                            <div class="list-desc">技术总监 - ABC公司</div>
+                        </div>
+                        <span class="tag tag-primary">VIP</span>
+                    </div>
+                    <div class="list-item">
+                        <div class="list-icon"><i class="fas fa-user-tie"></i></div>
+                        <div class="list-content">
+                            <div class="list-title">李四</div>
+                            <div class="list-desc">产品经理 - XYZ科技</div>
+                        </div>
+                        <span class="tag tag-success">嘉宾</span>
+                    </div>
+                    <div class="list-item">
+                        <div class="list-icon"><i class="fas fa-user-tie"></i></div>
+                        <div class="list-content">
+                            <div class="list-title">王五</div>
+                            <div class="list-desc">工程师 - 123科技</div>
+                        </div>
+                        <span class="tag tag-primary">参会</span>
+                    </div>
+                </div>
+                <button class="btn btn-primary" style="margin: 12px; width: calc(100% - 24px);" onclick="App.loadPage('home')">返回首页</button>
+            </div>
+        `;
+    },
+
+    // 渲染通知公告页面
+    renderNotice() {
+        return `
+            <div class="page">
+                <div class="card">
+                    <div class="card-title">通知公告</div>
+                    <div class="list-item">
+                        <div class="list-icon"><i class="fas fa-bullhorn"></i></div>
+                        <div class="list-content">
+                            <div class="list-title">大会即将开始</div>
+                            <div class="list-desc">请各位嘉宾准时入场</div>
+                        </div>
+                        <span class="tag tag-warning">重要</span>
+                    </div>
+                    <div class="list-item">
+                        <div class="list-icon"><i class="fas fa-info-circle"></i></div>
+                        <div class="list-content">
+                            <div class="list-title">WiFi密码更新</div>
+                            <div class="list-desc">会场WiFi密码已更新为：Conference2026</div>
+                        </div>
+                        <span class="tag tag-primary">通知</span>
+                    </div>
+                    <div class="list-item">
+                        <div class="list-icon"><i class="fas fa-utensils"></i></div>
+                        <div class="list-content">
+                            <div class="list-title">午餐安排</div>
+                            <div class="list-desc">午餐时间：12:00-13:30，地点：餐厅</div>
+                        </div>
+                        <span class="tag tag-success">提醒</span>
+                    </div>
+                </div>
+                <button class="btn btn-primary" style="margin: 12px; width: calc(100% - 24px);" onclick="App.loadPage('home')">返回首页</button>
+            </div>
+        `;
     },
 
     // 拨打电话
