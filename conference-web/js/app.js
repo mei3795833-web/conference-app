@@ -496,6 +496,7 @@ const App = {
                         <div style="font-size: 14px; font-weight: 600; color: #333; margin-bottom: 8px;"><i class="fas fa-info-circle"></i> 行程说明</div>
                         <div style="font-size: 13px; color: #666; line-height: 1.6;">
                             <div>• 费用已含在报名费中</div>
+                            <div>• 报名费$250包2个晚宴、1个午餐、2个游览团、接送机船纪念品</div>
                             <div>• 专业中文导游全程陪同</div>
                             <div>• 空调大巴接送</div>
                         </div>
