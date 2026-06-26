@@ -555,8 +555,12 @@ const App = {
                     <div style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); border-radius: 8px; padding: 16px; color: #fff; margin-bottom: 16px;">
                         <div style="font-size: 16px; font-weight: 600; margin-bottom: 8px;"><i class="fas fa-route"></i> 游览路线</div>
                         <div style="font-size: 13px; line-height: 1.8;">
-                            <div>1. 洛杉矶唐人街 - 寻根之旅（含午餐）</div>
-                            <div>2. 帕萨迪纳 - 市政厅、老城科罗拉多大道</div>
+                            <div>1. 圣盖博希尔顿酒店集合出发</div>
+                            <div>2. 圣塔莫尼卡海滩 - 感受加州阳光</div>
+                            <div>3. 比弗利山庄 - 探访明星豪宅区</div>
+                            <div>4. 罗迪欧大道 - 顶级购物街</div>
+                            <div>5. 盖蒂中心 - 世界级艺术博物馆</div>
+                            <div>6. 返回酒店</div>
                         </div>
                     </div>
                     
